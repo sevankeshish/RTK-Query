@@ -1,7 +1,11 @@
 import React from "react";
 import { Counter } from "./features/counter/Counter";
 import "./App.css";
-import { useContactQuery, useContactsQuery } from "./services/contactsApi";
+import {
+  useAddContactMutation,
+  useContactQuery,
+  useContactsQuery,
+} from "./services/contactsApi";
 
 function App() {
   const { data, error, isFetching, isLoading, isSuccess } = useContactsQuery();
@@ -25,6 +29,9 @@ function App() {
           })}
         </div>
       )}
+      <div>
+        <AddContact />
+      </div>
     </div>
   );
 }
@@ -32,6 +39,27 @@ function App() {
 export const ContactDetail = ({ id }: { id: string }) => {
   const { data } = useContactQuery(id);
   return <pre>{JSON.stringify(data, undefined, 2)}</pre>;
+};
+
+export const AddContact = () => {
+  const [addContact] = useAddContactMutation();
+  const { refetch } = useContactsQuery();
+  const contact = {
+    email: "rtkquery@rtk.com",
+    name: "John",
+    id: "6",
+  };
+
+  const addHandler = async () => {
+    await addContact(contact);
+    refetch();
+  };
+
+  return (
+    <>
+      <button onClick={addHandler}>Add Contact</button>
+    </>
+  );
 };
 
 export default App;
