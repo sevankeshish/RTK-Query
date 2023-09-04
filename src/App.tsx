@@ -13,7 +13,7 @@ function App() {
       {error && <h2>something went wrong</h2>}
       {isSuccess && (
         <div>
-          {data?.map((contact) => {
+          {data?.map((contact: any) => {
             return (
               <div key={contact.id}>
                 <span>{contact.name}</span>
